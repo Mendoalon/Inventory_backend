@@ -14,34 +14,49 @@ public class CategoryRestController {
     private IcategoryService service;
 
     /**
-     * Optener todas las categorias.
+     * Metodo Optener todas las categorias.
+     *
      * @return
      */
     @GetMapping("/categories")
-    public ResponseEntity<CategoryResponseRest> searchCategories(){
+    public ResponseEntity<CategoryResponseRest> searchCategories() {
         ResponseEntity<CategoryResponseRest> response = this.service.search();
         return response;
     }
 
     /**
-     *Optener todas la cotegoria por id.
+     * Metodo Optener todas la cotegoria por id.
+     *
      * @param id
      * @return
      */
     @GetMapping("/categories/{id}")
-    public ResponseEntity<CategoryResponseRest> searchCategoriesById(@PathVariable Long id){
+    public ResponseEntity<CategoryResponseRest> searchCategoriesById(@PathVariable Long id) {
         ResponseEntity<CategoryResponseRest> response = this.service.searchById(id);
         return response;
     }
 
     /**
-     * Guarda una categoria
+     * Metodo Guarda una categoria
+     *
      * @param category
      * @return
      */
     @PostMapping("/categories")
-    public ResponseEntity<CategoryResponseRest> save(@RequestBody Category category){
+    public ResponseEntity<CategoryResponseRest> save(@RequestBody Category category) {
         ResponseEntity<CategoryResponseRest> response = this.service.save(category);
+        return response;
+    }
+
+    /**
+     * Metodo para actualizar una categoria
+     * @param category
+     * @param id
+     * @return
+     */
+    @PutMapping("/categories/{id}")
+    public ResponseEntity<CategoryResponseRest> update(@RequestBody Category category, @PathVariable Long id) {
+        ResponseEntity<CategoryResponseRest> response = this.service.apdate(category, id);
         return response;
     }
 
