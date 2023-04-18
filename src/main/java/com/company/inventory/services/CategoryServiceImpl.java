@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements IcategoryService {
     public ResponseEntity<CategoryResponseRest> search() {
         CategoryResponseRest response = new CategoryResponseRest();
         try {
-            List<Category> categori = (List<Category>) categoryDao.findAll();
+            List<Category> categori = (List<Category>) this.categoryDao.findAll();
             response.getCategoryResponse().setCategory(categori);
             response.setMetadata("Respuesta Ok", "00", "Respuesta exitoxa");
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements IcategoryService {
         CategoryResponseRest response = new CategoryResponseRest();
         List<Category> list = new ArrayList<>();
         try {
-            Optional<Category> category = categoryDao.findById(id);
+            Optional<Category> category = this.categoryDao.findById(id);
             if (category.isPresent()) {
                 list.add(category.get());
                 response.getCategoryResponse().setCategory(list);
@@ -61,5 +61,28 @@ public class CategoryServiceImpl implements IcategoryService {
 
     }
 
+    @Override
+    @Transactional
+    public ResponseEntity<CategoryResponseRest> save(Category category) {
+        CategoryResponseRest response = new CategoryResponseRest();
+        List<Category> list = new ArrayList<>();
+        try {
+            Category categorySaved = this.categoryDao.save(category);
+            if (categorySaved != null) {
+                list.add(categorySaved);
+                response.setMetadata("Respuesta ok", "00", "Categoria guardada");
+                response.getCategoryResponse().setCategory(list);
+            } else {
+                response.setMetadata("Respuesta no ok", "-1", "Categoria no guardada");
+                return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            response.setMetadata("Respuesta no ok", "-1", "Error al consultar guardar categoria");
+            e.getStackTrace();
+            return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
+        return new ResponseEntity<CategoryResponseRest>(response, HttpStatus.OK);
+        
+    }
 }
