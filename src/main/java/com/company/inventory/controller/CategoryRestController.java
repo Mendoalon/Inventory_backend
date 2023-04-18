@@ -50,6 +50,7 @@ public class CategoryRestController {
 
     /**
      * Metodo para actualizar una categoria
+     *
      * @param category
      * @param id
      * @return
@@ -57,6 +58,18 @@ public class CategoryRestController {
     @PutMapping("/categories/{id}")
     public ResponseEntity<CategoryResponseRest> update(@RequestBody Category category, @PathVariable Long id) {
         ResponseEntity<CategoryResponseRest> response = this.service.apdate(category, id);
+        return response;
+    }
+
+    /**
+     * Metodo para eliminar categoria por id.
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<CategoryResponseRest> delete(@PathVariable Long id) {
+        ResponseEntity<CategoryResponseRest> response = this.service.delete(id);
         return response;
     }
 

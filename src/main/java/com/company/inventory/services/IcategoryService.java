@@ -5,10 +5,14 @@ import com.company.inventory.response.CategoryResponseRest;
 import org.springframework.http.ResponseEntity;
 
 public interface IcategoryService {
-    public ResponseEntity<CategoryResponseRest>search();
-    public ResponseEntity<CategoryResponseRest>searchById(Long id);
-    public ResponseEntity<CategoryResponseRest>save(Category category);
-    public ResponseEntity<CategoryResponseRest>apdate(Category category, Long id);
+    public ResponseEntity<CategoryResponseRest> search();
 
+    public ResponseEntity<CategoryResponseRest> searchById(Long id);
+
+    public ResponseEntity<CategoryResponseRest> save(Category category);
+
+    public ResponseEntity<CategoryResponseRest> apdate(Category category, Long id);
+
+    public ResponseEntity<CategoryResponseRest> delete(Long id);
 
 }
