@@ -3,7 +3,6 @@ package com.company.inventory.controller;
 import com.company.inventory.models.Product;
 import com.company.inventory.response.ProductResponseRest;
 import com.company.inventory.services.IProductService;
-import com.company.inventory.services.IcategoryService;
 import com.company.inventory.utils.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,7 @@ public class ProductRestController {
     @Autowired
     private IProductService productService;
 
-    /**
-     *
+    /**Guardar producto con imagen de el producto
      * @param picture
      * @param name
      * @param price
@@ -31,12 +29,11 @@ public class ProductRestController {
      */
     @PostMapping("/products")
     public ResponseEntity<ProductResponseRest> save(
-            @RequestParam("picture")MultipartFile picture,
+            @RequestParam("picture") MultipartFile picture,
             @RequestParam("name") String name,
             @RequestParam("price") int price,
             @RequestParam("account") int account,
-            @RequestParam("categoryId") Long categoryID) throws IOException
-    {
+            @RequestParam("categoryId") Long categoryID) throws IOException {
         Product product = new Product();
         product.setName(name);
         product.setAccount(account);
@@ -48,5 +45,15 @@ public class ProductRestController {
         return response;
     }
 
+    /**
+     * Buscar por prodcuto por Id
+     * @param id
+     * @return
+     */
+    @GetMapping("/products/{id}")
+    public ResponseEntity<ProductResponseRest> searchById(@PathVariable Long id) {
+        ResponseEntity<ProductResponseRest> response = this.productService.searchById(id);
+        return response;
+    }
 
 }

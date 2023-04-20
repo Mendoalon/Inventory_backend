@@ -10,15 +10,15 @@ import java.io.Serializable;
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
-    private  static final long serialVersionUID = 3414676185056866407L;
+    private static final long serialVersionUID = 3414676185056866407L;
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int price;
     private int account;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"hibernateLazyInitiallizer", "handle"})
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Category category;
     @Lob
     @Basic(fetch = FetchType.LAZY)
