@@ -18,7 +18,9 @@ public class ProductRestController {
     @Autowired
     private IProductService productService;
 
-    /**Guardar producto con imagen de el producto
+    /**
+     * Guardar producto con imagen de el producto
+     *
      * @param picture
      * @param name
      * @param price
@@ -28,12 +30,7 @@ public class ProductRestController {
      * @throws IOException
      */
     @PostMapping("/products")
-    public ResponseEntity<ProductResponseRest> save(
-            @RequestParam("picture") MultipartFile picture,
-            @RequestParam("name") String name,
-            @RequestParam("price") int price,
-            @RequestParam("account") int account,
-            @RequestParam("categoryId") Long categoryID) throws IOException {
+    public ResponseEntity<ProductResponseRest> save(@RequestParam("picture") MultipartFile picture, @RequestParam("name") String name, @RequestParam("price") int price, @RequestParam("account") int account, @RequestParam("categoryId") Long categoryID) throws IOException {
         Product product = new Product();
         product.setName(name);
         product.setAccount(account);
@@ -47,6 +44,7 @@ public class ProductRestController {
 
     /**
      * Buscar prodcuto por Id
+     *
      * @param id
      * @return
      */
@@ -58,17 +56,19 @@ public class ProductRestController {
 
     /**
      * Buscar por nombre.
+     *
      * @param name
      * @return
      */
     @GetMapping("/products/filter/{name}")
-    public ResponseEntity<ProductResponseRest> searchByName(@PathVariable String name){
+    public ResponseEntity<ProductResponseRest> searchByName(@PathVariable String name) {
         ResponseEntity<ProductResponseRest> response = this.productService.findByName(name);
         return response;
     }
 
     /**
      * Eliminar producto por Id
+     *
      * @param id
      * @return
      */
@@ -79,8 +79,40 @@ public class ProductRestController {
     }
 
     @GetMapping("/products")
-    public ResponseEntity<ProductResponseRest> searchByName(){
+    public ResponseEntity<ProductResponseRest> searchByName() {
         ResponseEntity<ProductResponseRest> response = this.productService.search();
         return response;
     }
+
+    /**
+     * Actualizar producto.
+     * @param picture
+     * @param name
+     * @param price
+     * @param account
+     * @param categoryID
+     * @param id
+     * @return
+     * @throws IOException
+     */
+    @PutMapping("/products/{id}")
+    public ResponseEntity<ProductResponseRest> update(@RequestParam("picture") MultipartFile picture,
+                                                      @RequestParam("name") String name,
+                                                      @RequestParam("price") int price,
+                                                      @RequestParam("account") int account,
+                                                      @RequestParam("categoryId") Long categoryID,
+                                                      @PathVariable Long id) throws IOException {
+
+        Product product = new Product();
+        product.setName(name);
+        product.setAccount(account);
+        product.setPrice(price);
+        product.setPicture(Util.compressZLib(picture.getBytes()));
+
+        ResponseEntity<ProductResponseRest> response = this.productService.update(product, categoryID, id);
+
+        return response;
+    }
+
+
 }
