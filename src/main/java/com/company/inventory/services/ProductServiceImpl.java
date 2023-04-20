@@ -68,7 +68,7 @@ public class ProductServiceImpl implements IProductService {
             //Search product By Id
             Optional<Product> product = this.productDao.findById(id);
             if (product.isPresent()) {
-                byte [] imageDescompresed = Util.decompressZLib(product.get().getPicture());
+                byte[] imageDescompresed = Util.decompressZLib(product.get().getPicture());
                 product.get().setPicture(imageDescompresed);
                 list.add(product.get());
                 response.getProductResponse().setProducts(list);
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements IProductService {
             listAux = this.productDao.findByNameContainingIgnoreCase(name);
             if (listAux.size() > 0) {
                 listAux.stream().forEach((product) -> {
-                    byte [] imageDescompresed = Util.decompressZLib(product.getPicture());
+                    byte[] imageDescompresed = Util.decompressZLib(product.getPicture());
                     product.setPicture(imageDescompresed);
                     list.add(product);
                 });
@@ -113,6 +113,24 @@ public class ProductServiceImpl implements IProductService {
         } catch (Exception e) {
             e.getMessage();
             response.setMetadata("respuesta no ok", "-1", "Error al buscar producto por nombre");
+            return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ProductResponseRest> deleteById(Long id) {
+        ProductResponseRest response = new ProductResponseRest();
+
+        try {
+            //delete  product By Id
+            this.productDao.deleteById(id);
+            response.setMetadata("Respuesta ok", "00", "Producto eliminado");
+
+        } catch (Exception e) {
+            e.getMessage();
+            response.setMetadata("respuesta no ok", "-1", "Error al eliminar producto");
             return new ResponseEntity<ProductResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(response, HttpStatus.OK);
